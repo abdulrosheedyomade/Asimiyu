@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F4FB">
+<title>Ayomide's Day</title>
+<meta name="application-name" content="Ayomide's Day">
+<meta name="apple-mobile-web-app-title" content="Ayomide's Day">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F5F4FB; --surface:#ffffff; --text:#14142B; --muted:#8B8AA3; --line:#E6E4F0; --field:#EFEDF8;
+  --btn:#14142B; --on-btn:#ffffff; --ink:#14142B;
+  --nav-bg:#14142B; --nav-ic:#ffffff; --nav-on-bg:#ffffff; --nav-on-ic:#14142B;
+  --purple:#C6B3F6; --orange:#FFB35C; --blue:#A9C9FA; --pink:#F2A9EA; --green:#AEE8A6; --yellow:#FFC57A;
+  --font:ui-rounded,"SF Pro Rounded","Nunito","Avenir Next",system-ui,sans-serif;
+  --k:#D9EE9E; --kd:#8FBF1F;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --bg:#13112A; --surface:#211E44; --text:#F3F1FF; --muted:#A9A6CC; --line:#363265; --field:#2B2760;
+    --btn:#ffffff; --on-btn:#14142B;
+    --nav-bg:#2B2766; --nav-ic:#ffffff; --nav-on-bg:#ffffff; --nav-on-ic:#14142B;
+  }
+}
+[hidden]{display:none !important}
+[data-kind=sleep]   {--k:#B7C6FF;--kd:#5C74E8}
+[data-kind=personal]{--k:#FFD98A;--kd:#F2A400}
+[data-kind=prayer]  {--k:#AEE8B8;--kd:#2FBF72}
+[data-kind=exercise]{--k:#FFB0CB;--kd:#E8447F}
+[data-kind=free]    {--k:#A9DBFA;--kd:#2D9BE8}
+[data-kind=study]   {--k:#CBB8F8;--kd:#8A5CE6}
+[data-kind=practice]{--k:#FFBB66;--kd:#F07A14}
+[data-kind=scroll]  {--k:#DADCEB;--kd:#8E93B8}
+[data-kind=open]    {--k:#D9EE9E;--kd:#8FBF1F}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.35;min-height:100vh;padding-bottom:120px;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
+:focus-visible{outline:3px solid var(--btn);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 18px 0}
+
+/* header */
+.top{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:10px;margin-bottom:14px}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--orange);color:var(--ink);font-weight:800;font-size:1.3rem;display:grid;place-items:center;border:3px solid var(--surface);box-shadow:0 0 0 2px var(--purple)}
+.avatar.big{width:68px;height:68px;font-size:1.8rem}
+.hi{text-align:center}
+.hi .h1{font-weight:700;font-size:1.05rem}
+.hi .h2{color:var(--muted);font-size:.82rem;font-weight:600}
+.round{width:48px;height:48px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);display:grid;place-items:center}
+.round svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.round[aria-pressed="true"]{background:var(--btn);color:var(--on-btn);border-color:var(--btn)}
+.alarmnote{background:var(--field);border-radius:16px;padding:9px 14px;font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:14px;text-align:center}
+
+/* hero: daily challenge */
+.card{border-radius:30px}
+.hero{position:relative;overflow:hidden;background:var(--purple);color:var(--ink);padding:22px 20px;min-height:178px;margin-bottom:16px}
+.heroTxt{position:relative;z-index:2;max-width:58%}
+.hero h2{font-size:2rem;line-height:1.02;font-weight:700;letter-spacing:-.5px}
+.hero p{font-size:.8rem;font-weight:600;margin:8px 0 14px;opacity:.85}
+.avs{display:flex;align-items:center}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--k);border:3px solid var(--purple);margin-left:-8px;font-size:.95rem;font-style:normal;opacity:.55}
+.av:first-child{margin-left:0}
+.av.done{opacity:1}
+.av.more{background:#8F6FE8;color:#fff;font-size:.72rem;font-weight:700;opacity:1}
+.pct{margin-left:10px;background:#fff;color:var(--ink);font-weight:800;font-size:.85rem;padding:5px 12px;border-radius:999px}
+.shapes{position:absolute;right:6px;top:10px;width:150px;height:160px;z-index:1}
+.sh{position:absolute;display:block}
+.sh1{left:44px;top:0;width:68px;height:68px;border-radius:50%;border:20px solid #FFA41B;transform:rotate(-10deg);
+  box-shadow:inset 0 6px 7px rgba(255,255,255,.55),inset 0 -7px 9px rgba(150,70,0,.35),0 10px 14px rgba(60,20,110,.28)}
+.sh2{right:4px;top:16px;width:46px;height:54px;border-radius:15px;background:linear-gradient(90deg,#303030,#6d6d6d 42%,#272727);box-shadow:0 10px 14px rgba(60,20,110,.3),inset 0 3px 4px rgba(255,255,255,.3)}
+.sh3{left:26px;top:52px;width:70px;height:64px;border-radius:22px;background:linear-gradient(90deg,#858a87,#c6cac7 42%,#767b78);box-shadow:0 10px 14px rgba(60,20,110,.28),inset 0 3px 4px rgba(255,255,255,.5)}
+.sh4{right:0;top:66px;width:66px;height:66px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff4ea,#dcc3b2 55%,#a98d7b);box-shadow:0 10px 14px rgba(60,20,110,.28)}
+.sh5{left:-2px;top:112px;width:50px;height:50px;border-radius:50%;border:14px solid #FFE03A;box-shadow:inset 0 4px 5px rgba(255,255,255,.6),inset 0 -5px 7px rgba(150,120,0,.35),0 8px 12px rgba(60,20,110,.25)}
+@media (prefers-reduced-motion: no-preference){
+  .sh1{animation:fl 6s ease-in-out infinite}
+  .sh4{animation:fl 7s ease-in-out -2s infinite}
+  .sh5{animation:fl 5s ease-in-out -1s infinite}
+  @keyframes fl{50%{transform:translateY(-6px) rotate(-6deg)}}
+}
+
+.focus{background:var(--surface);border:1.5px solid var(--line);border-radius:20px;padding:12px 16px;font-weight:600;font-size:.9rem;margin-bottom:16px}
+.focus b{font-weight:800}
+
+/* day pills */
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:22px}
+.day{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 0 9px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line)}
+.day span{font-size:.7rem;color:var(--muted);font-weight:600}
+.day b{font-size:1rem;font-weight:700}
+.day .dot{width:6px;height:6px;border-radius:50%;background:transparent;margin-bottom:2px}
+.day .dot[data-kind]{background:var(--kd)}
+.day.sel{background:var(--btn);color:var(--on-btn);border-color:var(--btn)}
+.day.sel span{color:var(--on-btn);opacity:.75}
+.day:disabled{opacity:.45;cursor:default}
+
+h2.sec{font-size:1.45rem;font-weight:700;margin:0 2px 12px;letter-spacing:-.3px}
+
+/* plan grid */
+.plan{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;margin-bottom:26px}
+.pcard{border-radius:28px;padding:16px;color:var(--ink);background:var(--k);position:relative;overflow:hidden}
+.nowc{grid-row:1 / span 2;min-height:262px;display:flex;flex-direction:column;justify-content:space-between}
+.tag{display:inline-block;background:rgba(255,255,255,.55);border-radius:999px;font-size:.72rem;font-weight:700;padding:3px 11px}
+.pcard h3{font-size:1.5rem;line-height:1.08;font-weight:700;margin:10px 0 6px;letter-spacing:-.4px}
+.pm{font-size:.8rem;font-weight:600;line-height:1.35}
+.pn{font-size:.75rem;font-weight:600;opacity:.75;margin-top:6px}
+.cdline{font-size:.8rem;font-weight:600;margin-bottom:6px}
+.cdline b{font-size:1.3rem;font-weight:800;font-variant-numeric:tabular-nums}
+.pbar{height:7px;border-radius:999px;background:rgba(255,255,255,.55);overflow:hidden;margin-bottom:12px}
+.pbar i{display:block;height:100%;width:0;background:var(--ink);border-radius:999px;transition:width .9s linear}
+.mrow{display:flex;gap:8px}
+.mk{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.7);font-weight:800;font-size:1rem;color:var(--ink)}
+.mk.on[data-val="1"]{background:var(--ink);color:#fff}
+.mk.on[data-val="0.5"]{background:#fff;box-shadow:0 0 0 3px var(--ink) inset}
+.mk.on[data-val="0"]{background:#E8447F;color:#fff}
+.rest{font-weight:700;font-size:.85rem}
+.nextc{min-height:122px}
+.nextc .big3d{position:absolute;right:10px;bottom:6px;font-size:3rem;filter:drop-shadow(0 8px 8px rgba(40,20,100,.3))}
+.nextc h3{font-size:1.25rem;max-width:80%}
+.quick{background:var(--pink);display:flex;align-items:center;justify-content:space-around;min-height:78px;padding:12px}
+.qb{width:44px;height:44px;border-radius:50%;background:#fff;font-size:1.2rem;display:grid;place-items:center}
+
+/* session rows */
+.rows{margin-bottom:10px}
+.row{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:start;padding:14px 0;border-bottom:1.5px solid var(--line)}
+.row:last-child{border-bottom:none}
+.row.cur{background:color-mix(in srgb,var(--k) 32%,transparent);border-radius:22px;padding:14px 12px;margin:0 -12px;border-bottom-color:transparent}
+.ic{width:48px;height:48px;border-radius:50%;background:var(--k);display:grid;place-items:center;font-size:1.35rem}
+.rt h4{font-size:1rem;font-weight:700;line-height:1.2}
+.rt p{font-size:.8rem;color:var(--muted);font-weight:600}
+.rt .nt{font-weight:500}
+.mrow2{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pill{padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:700;background:var(--surface);border:1.5px solid var(--line)}
+.pill.on[data-val="1"]{background:var(--green);border-color:var(--green);color:var(--ink)}
+.pill.on[data-val="0.5"]{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+.pill.on[data-val="0"]{background:var(--pink);border-color:var(--pink);color:var(--ink)}
+.rr{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.sw{width:48px;height:28px;border-radius:999px;background:var(--line);position:relative;transition:background .2s}
+.sw i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s}
+.sw[aria-pressed="true"]{background:#2FBF72}
+.sw[aria-pressed="true"] i{transform:translateX(20px)}
+.lnk{font-size:.78rem;font-weight:700;color:var(--muted);text-decoration:underline;padding:2px 0}
+.savenote{font-size:.78rem;color:var(--muted);font-weight:600;margin:6px 2px 0}
+
+/* page headings, chips, rows on other pages */
+h1.pg{font-size:1.9rem;font-weight:700;letter-spacing:-.5px;margin:4px 2px 2px}
+.pgsub{color:var(--muted);font-weight:600;font-size:.9rem;margin:0 2px 16px}
+.chips3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.chip{border-radius:22px;padding:12px 14px;color:var(--ink)}
+.chip small{display:block;font-size:.72rem;font-weight:600}
+.chip b{font-size:1.45rem;font-weight:800;line-height:1.15}
+.chip em{font-style:normal;font-size:.72rem;font-weight:700;margin-left:2px}
+.chip.g{background:var(--green)} .chip.b{background:var(--blue)} .chip.o{background:var(--yellow)}
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:28px;padding:18px;margin-bottom:16px}
+.panel h2{font-size:1.15rem;font-weight:700;margin-bottom:2px}
+.panel .sub{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:10px}
+.prow{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1.5px solid var(--line)}
+.prow:last-child{border-bottom:none}
+.prow .ic{width:44px;height:44px;font-size:1.2rem}
+.prow b{display:block;font-size:.95rem;font-weight:700}
+.prow span{font-size:.8rem;color:var(--muted);font-weight:600}
+.prows{margin-bottom:12px}
+textarea.tin,input.tin{width:100%;background:var(--field);border:none;color:var(--text);border-radius:18px;padding:13px 15px;font:inherit;font-weight:600;font-size:1rem;resize:vertical}
+textarea.tin{min-height:78px;margin-bottom:10px}
+.tin::placeholder{color:var(--muted)}
+.btn{background:var(--btn);color:var(--on-btn);border-radius:999px;padding:13px 22px;font-weight:700}
+.btn.light{background:var(--field);color:var(--text)}
+.btn.danger{background:#E8447F;color:#fff}
+
+/* week chart */
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;height:190px}
+.col{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
+.tube{flex:1;width:100%;max-width:38px;border-radius:999px;background:var(--field);display:flex;align-items:flex-end;overflow:hidden}
+.tube.today{box-shadow:0 0 0 2.5px var(--btn)}
+.fill{width:100%;border-radius:999px;background:linear-gradient(180deg,var(--k),var(--kd));transition:height .6s}
+.pc{font-size:.7rem;font-weight:800}
+.dn{font-size:.7rem;font-weight:600;color:var(--muted)}
+
+/* month grid */
+.mh,.mg{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.mh{margin-bottom:7px;text-align:center;font-weight:700;font-size:.78rem;color:var(--muted)}
+.cell{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem;background:var(--field);color:var(--muted)}
+.cell[data-kind]{background:var(--k);color:var(--ink)}
+.cell.future{opacity:.45}
+.cell.today{box-shadow:0 0 0 2.5px var(--btn)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-weight:600;font-size:.78rem;color:var(--muted);margin-top:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px;background:var(--k)}
+
+/* talk */
+.prof{display:flex;gap:14px;align-items:center;margin:4px 2px 16px}
+.prof h1{font-size:1.5rem;font-weight:700}
+.prof p{color:var(--muted);font-weight:600;font-size:.88rem}
+.chatcard{background:var(--surface);border:1.5px solid var(--line);border-radius:28px;padding:14px;margin-bottom:14px}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:46vh;min-height:170px;overflow-y:auto;padding:2px 2px 10px}
+.msg{max-width:88%;padding:11px 15px;border-radius:22px;font-weight:600;font-size:.95rem;overflow-wrap:anywhere;color:var(--ink)}
+.msg.app{align-self:flex-start;background:var(--purple);border-bottom-left-radius:8px}
+.msg.me{align-self:flex-end;background:var(--orange);border-bottom-right-radius:8px}
+.qrow{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 8px}
+.qrow .pill{padding:9px 15px;font-size:.85rem}
+.send{display:flex;gap:10px}
+.send input{flex:1;min-width:0}
+
+/* dialog */
+dialog{border:none;border-radius:30px;padding:22px;width:min(92vw,430px);margin:auto;background:var(--surface);color:var(--text);box-shadow:0 20px 60px rgba(20,20,43,.35);max-height:90vh;overflow-y:auto}
+dialog::backdrop{background:rgba(20,20,43,.5)}
+dialog h3{font-size:1.5rem;font-weight:700;margin-bottom:14px}
+.f{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;font-weight:700;font-size:.82rem;color:var(--muted)}
+.f input,.f select{background:var(--field);border:none;color:var(--text);border-radius:16px;padding:12px 14px;font:inherit;font-weight:600;font-size:1rem}
+.f textarea{background:var(--field);border:none;color:var(--text);border-radius:16px;padding:12px 14px;font:inherit;font-weight:600;font-size:.95rem;resize:vertical;min-height:96px}
+.f small{font-weight:600;font-size:.74rem}
+.chk{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:12px}
+.chk input{width:22px;height:22px;accent-color:#2FBF72}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drow{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:10px}
+.drow .danger{margin-right:auto}
+
+/* plan steps + auto tab */
+.planbtn{display:block;margin-top:8px;padding:4px 0}
+.steps{list-style:none;margin-top:6px;display:flex;flex-direction:column}
+.stp{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;padding:7px 0}
+.stp i{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--kd);margin-top:1px;display:grid;place-items:center;font-style:normal;font-size:.75rem;font-weight:800;color:var(--text)}
+.stp .tx{font-weight:600;font-size:.88rem;line-height:1.3}
+.stp b{display:block;font-size:.95rem;font-weight:700}
+.stp small{display:block;color:var(--muted);font-weight:600;font-size:.8rem;margin-top:2px}
+.stp.on i{background:var(--kd);border-color:var(--kd);color:#fff}
+.stp.on .tx{opacity:.55}
+.alist .stp{padding:11px 0;border-bottom:1.5px solid var(--line)}
+.alist .stp:last-child{border-bottom:none}
+.truth{background:var(--yellow);color:var(--ink);border-radius:28px;padding:18px;margin-bottom:16px}
+.truth h2{font-size:1.15rem;font-weight:700;margin-bottom:6px}
+.truth p{font-size:.88rem;font-weight:600;line-height:1.4;margin-bottom:6px}
+.rcard{padding:12px 0;border-bottom:1.5px solid var(--line);display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.rcard:last-child{border-bottom:none}
+.rcard .ic{width:44px;height:44px;font-size:1.2rem}
+.rcard b{display:block;font-size:.95rem;font-weight:700}
+.rcard div div{font-size:.8rem;color:var(--muted);font-weight:600;line-height:1.4}
+input[type=range]{width:100%;accent-color:var(--btn);margin:6px 0 4px}
+.progress{font-weight:800;font-size:.85rem;color:var(--muted);margin-bottom:6px}
+
+/* bottom nav */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));width:min(420px,calc(100% - 32px));height:66px;border-radius:999px;background:var(--nav-bg);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;padding:7px;z-index:20;box-shadow:0 12px 30px rgba(20,20,43,.3)}
+.nav button{width:52px;height:52px;border-radius:50%;justify-self:center;display:grid;place-items:center;color:var(--nav-ic)}
+.nav button[aria-selected="true"]{background:var(--nav-on-bg);color:var(--nav-on-ic)}
+.nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.nav :focus-visible{outline-color:#fff}
+
+/* alarm screen */
+#ring{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:var(--bg)}
+#ring.on{display:flex}
+#ring .emo{width:150px;height:150px;border-radius:50%;background:var(--k);display:grid;place-items:center;font-size:4.6rem;margin-bottom:18px}
+#ring .sub{font-weight:700;color:var(--muted);font-size:1.05rem}
+#ring .big{font-size:2.4rem;font-weight:800;letter-spacing:-.5px;margin:6px 0}
+#ring .stack{display:flex;flex-direction:column;gap:12px;width:min(320px,100%);margin-top:26px}
+#ring .btn{padding:17px;font-size:1.1rem}
+@media (prefers-reduced-motion: no-preference){
+  #ring.on .emo{animation:wig .7s ease-in-out infinite}
+  @keyframes wig{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg) scale(1.06)}}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <button class="avatar" id="avatarBtn" aria-label="Open talk">A</button>
+    <div class="hi"><div class="h1" id="hello"></div><div class="h2" id="dateLine"></div></div>
+    <button class="round" id="bell" aria-pressed="false" aria-label="Turn alarms on">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg>
+    </button>
+  </header>
+  <p class="alarmnote" id="alarmNote">Alarms are off. Tap the bell to turn them on, and keep this page open.</p>
+
+  <main>
+    <!-- HOME -->
+    <section id="v-today">
+      <div class="card hero" id="hero"></div>
+      <div class="focus" id="focus" hidden></div>
+      <div class="days" id="days" aria-label="This week"></div>
+
+      <section id="planWrap">
+        <h2 class="sec">Your plan</h2>
+        <div class="plan" id="plan"></div>
+      </section>
+
+      <h2 class="sec" id="rowsTitle">All sessions</h2>
+      <div class="rows" id="rows"></div>
+      <p class="savenote" id="saveNote"></p>
+    </section>
+
+    <!-- MONTH -->
+    <section id="v-month" hidden></section>
+
+    <!-- WEEK -->
+    <section id="v-week" hidden></section>
+
+    <!-- AUTO -->
+    <section id="v-auto" hidden></section>
+
+    <!-- TALK -->
+    <section id="v-talk" hidden>
+      <div class="prof">
+        <div class="avatar big" id="profAv">A</div>
+        <div><h1 id="profName"></h1><p>Your daily coach</p></div>
+      </div>
+      <div class="chips3" id="talkChips"></div>
+      <div class="chatcard">
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="qrow" id="qrow"></div>
+        <div class="send">
+          <input class="tin" id="chatIn" type="text" maxlength="400" enterkeyhint="send" autocomplete="off">
+          <button class="btn" id="chatSend">Send</button>
+        </div>
+      </div>
+      <button class="btn light" id="askMe">Ask me something</button>
+    </section>
+  </main>
+</div>
+
+<nav class="nav" role="tablist" aria-label="Sections">
+  <button role="tab" data-tab="today" aria-selected="true" aria-label="Home">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 3.5 20.5 11"/><path d="M5.5 9.5V20h13V9.5"/></svg>
+  </button>
+  <button role="tab" data-tab="month" aria-selected="false" aria-label="Month">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>
+  </button>
+  <button role="tab" data-tab="week" aria-selected="false" aria-label="Week">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8.5 16.5v-4M12 16.5V8M15.5 16.5v-6"/></svg>
+  </button>
+  <button role="tab" data-tab="auto" aria-selected="false" aria-label="Auto mode">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2.5 5 13.5h6l-1 8 8-11h-6z"/></svg>
+  </button>
+  <button role="tab" data-tab="talk" aria-selected="false" aria-label="Talk">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11H10l-4.5 3.5v-3.5H4z"/></svg>
+  </button>
+</nav>
+
+<div id="ring" role="alertdialog" aria-live="assertive" aria-label="Alarm" data-kind="open">
+  <div class="emo" id="ringEmo">⏰</div>
+  <div class="sub" id="ringKind">Time for</div>
+  <div class="big" id="ringName"></div>
+  <div class="sub" id="ringTime"></div>
+  <div class="stack">
+    <button class="btn" id="dismiss">Let’s go</button>
+    <button class="btn light" id="snooze">Snooze 5 min</button>
+  </div>
+</div>
+
+<dialog id="dlg">
+  <h3 id="dlgTitle">Edit session</h3>
+  <label class="f">Name<input id="fName" type="text" maxlength="40"></label>
+  <div class="row2">
+    <label class="f">Starts<input id="fStart" type="time"></label>
+    <label class="f">Ends<input id="fEnd" type="time"></label>
+  </div>
+  <label class="f">Type
+    <select id="fKind">
+      <option value="sleep">😴 Sleep</option>
+      <option value="personal">🌅 Personal</option>
+      <option value="prayer">🙏 Prayer</option>
+      <option value="exercise">💪 Exercise</option>
+      <option value="free">🎈 Free time</option>
+      <option value="study">✍️ Copywriting / study</option>
+      <option value="practice">🎯 Practice / work</option>
+      <option value="scroll">📱 Scrolling</option>
+      <option value="open">⭐ Open</option>
+    </select>
+  </label>
+  <label class="f">Note<input id="fNote" type="text" maxlength="80"></label>
+  <label class="f">Detailed plan <small>One step per line</small><textarea id="fPlan"></textarea></label>
+  <label class="chk"><input type="checkbox" id="fTrack"> Count this toward my effort goals</label>
+  <div class="drow">
+    <button class="btn danger" id="fDelete">Delete</button>
+    <button class="btn light" id="fCancel">Cancel</button>
+    <button class="btn" id="fSave">Save</button>
+  </div>
+</dialog>
+
+<script>
+/* =========================================================
+   Data and saving
+   ========================================================= */
+const KEY = "ajisafe-routine-v1";
+const m = (h, min = 0) => h * 60 + min;
+const EMOJI = { sleep:"😴", personal:"🌅", prayer:"🙏", exercise:"💪", free:"🎈", study:"✍️", practice:"🎯", scroll:"📱", open:"⭐" };
+
+const DEFAULT_SESSIONS = [
+  { id: 1, name: "Sleep",                          start: m(0),    end: m(4,30), kind: "sleep",    alarm: true,  track: false, note: "Lights out" },
+  { id: 2, name: "Wake up + personal time",        start: m(4,30), end: m(5,30), kind: "personal", alarm: true,  track: true,  note: "Start the day on purpose" },
+  { id: 3, name: "Prayer time",                    start: m(5,30), end: m(6,15), kind: "prayer",   alarm: true,  track: true,  note: "" },
+  { id: 4, name: "Exercise",                       start: m(6,15), end: m(7),    kind: "exercise", alarm: true,  track: true,  note: "About 30 minutes of movement" },
+  { id: 5, name: "Free time",                      start: m(7),    end: m(8),    kind: "free",     alarm: true,  track: false, note: "" },
+  { id: 6, name: "Copywriting",                    start: m(8),    end: m(12),   kind: "study",    alarm: true,  track: true,  note: "The art of copy" },
+  { id: 7, name: "Practice, work, ads + research", start: m(12),   end: m(16),   kind: "practice", alarm: true,  track: true,  note: "Practicing, working and GM, working on ads, research" },
+  { id: 9, name: "Open time",                      start: m(16),   end: m(24),   kind: "open",     alarm: false, track: false, note: "Nothing planned yet" }
+];
+
+const DEFAULT_PLANS = {
+  1: ["Phone on the charger, out of arm's reach", "Speaker charged and switched on", "Lights out"],
+  2: ["Sit up and put both feet on the floor", "Drink a full glass of water", "Wash your face", "Write your ONE focus for today", "No scrolling"],
+  3: ["Get ready for prayer", "Pray", "Sit quietly and say thanks", "Set your intention for the day"],
+  4: ["2 minute warm-up", "30 minutes of movement: pushups, squats, plank or a run", "3 minutes of stretching", "Drink water"],
+  5: ["Breakfast", "Shower and get dressed", "Clear your desk and open your notes"],
+  6: ["Phone on Do not disturb", "Hour 1: study the craft of copy", "Hour 2: hand-copy one proven ad", "Hours 3 and 4: write your own copy", "Last 10 minutes: note one lesson learned"],
+  7: ["Lunch break, 20 minutes", "Practice and client work", "Ads: build or review one", "Research: one market or competitor", "Close: write tomorrow's top task"],
+  9: ["Choose one thing to be proud of today", "Plan tomorrow", "Wind down and get ready for bed"]
+};
+DEFAULT_SESSIONS.forEach(s => { s.plan = (DEFAULT_PLANS[s.id] || []).slice(); });
+
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } },
+  set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); return true; } catch (e) { return false; } }
+};
+function canSave() { try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; } catch (e) { return false; } }
+const fresh = () => ({
+  name: "Ayomide", fullName: "Asmiyu Rashid Ayomide", sessions: DEFAULT_SESSIONS, nextId: 100,
+  auto: { speaker: "", volume: "60", done: {} }, steps: {},
+  log: {}, focus: {}, notes: [], targets: { week: {}, month: {} }, reflections: {},
+  chat: [], asked: {}, pending: null
+});
+let state = Object.assign(fresh(), store.get() || {});
+state.targets = Object.assign({ week: {}, month: {} }, state.targets);
+/* make older saved data yours: new name, auto settings, step ticks */
+if (!state.name || state.name === "Ajisafe") state.name = "Ayomide";
+state.fullName = "Asmiyu Rashid Ayomide";
+state.auto = Object.assign({ speaker: "", volume: "60", done: {} }, state.auto);
+state.auto.done = state.auto.done || {};
+state.steps = state.steps || {};
+function save() { store.set(state); }
+
+/* =========================================================
+   Helpers
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, "0");
+
+function fmt(min) {
+  min = ((min % 1440) + 1440) % 1440;
+  const h = Math.floor(min / 60), mm = min % 60;
+  return `${h % 12 === 0 ? 12 : h % 12}:${pad(mm)} ${h >= 12 ? "PM" : "AM"}`;
+}
+const toInput = min => `${pad(Math.floor(min / 60) % 24)}:${pad(min % 60)}`;
+const fromInput = v => { const [h, mm] = v.split(":").map(Number); return h * 60 + mm; };
+const dayKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const keyToDate = k => { const [y, mo, d] = k.split("-").map(Number); return new Date(y, mo - 1, d); };
+const lenOf = s => s.end > s.start ? s.end - s.start : 1440 - s.start + s.end;
+const inSession = (s, nowMin) => s.end > s.start ? (nowMin >= s.start && nowMin < s.end) : (nowMin >= s.start || nowMin < s.end);
+const sorted = () => [...state.sessions].sort((a, b) => a.start - b.start);
+const tracked = () => state.sessions.filter(s => s.track);
+const nowMinOf = d => d.getHours() * 60 + d.getMinutes();
+const todayKey = () => dayKey(new Date());
+function mondayOf(d) {
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  x.setDate(x.getDate() - ((x.getDay() + 6) % 7));
+  return x;
+}
+const tagFor = s => s.track ? "Effort" : (s.kind === "sleep" || s.kind === "free") ? "Rest" : "Open";
+
+let viewKey = todayKey(), lastDay = viewKey;
+const viewingToday = () => viewKey === todayKey();
+
+/* =========================================================
+   Effort scoring: Done = 1, Partly = 0.5, Missed = 0
+   ========================================================= */
+function dayScore(key) {
+  const log = state.log[key], t = tracked();
+  if (!log || !t.length || !t.some(s => log[s.id] !== undefined)) return null;
+  return t.reduce((a, s) => a + (log[s.id] || 0), 0) / t.length;
+}
+const level = sc => sc === null ? "scroll" : sc >= 0.8 ? "prayer" : sc >= 0.4 ? "personal" : "exercise";
+function streak() {
+  const d = new Date();
+  let sc = dayScore(dayKey(d));
+  if (sc === null || sc < 0.6) d.setDate(d.getDate() - 1);
+  let n = 0;
+  while (true) {
+    sc = dayScore(dayKey(d));
+    if (sc !== null && sc >= 0.6) { n++; d.setDate(d.getDate() - 1); } else break;
+  }
+  return n;
+}
+function weekAvg() {
+  const mon = mondayOf(new Date()); let sum = 0, cnt = 0;
+  for (let i = 0; i < 7; i++) { const d = new Date(mon); d.setDate(mon.getDate() + i); const sc = dayScore(dayKey(d)); if (sc !== null) { sum += sc; cnt++; } }
+  return cnt ? sum / cnt : null;
+}
+
+function setMark(id, val, key) {
+  key = key || viewKey;
+  state.log[key] = state.log[key] || {};
+  if (val === null) delete state.log[key][id]; else state.log[key][id] = val;
+  if (val !== null && key === todayKey() && state.pending && state.pending.type === "mark" && state.pending.id === id) {
+    state.pending = null;
+    const s = state.sessions.find(x => x.id === id);
+    const rk = val === 1 ? "done" : val === 0.5 ? "partly" : "missed";
+    addMsg("app", pick(REPLY[rk])(state.name, s ? s.name : "that one"));
+  }
+  save(); refreshAll();
+}
+
+/* =========================================================
+   HOME rendering
+   ========================================================= */
+function greeting() {
+  const h = new Date().getHours();
+  return `${h < 4 ? "Good night" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"}, ${state.name}`;
+}
+
+function renderHero() {
+  const t = tracked(), log = state.log[viewKey] || {}, sc = dayScore(viewKey) || 0;
+  const lastEnd = t.length ? Math.max(...t.map(s => s.end)) : 0;
+  const vd = keyToDate(viewKey);
+  const sub = viewingToday()
+    ? (t.length ? `Finish your effort sessions before ${fmt(lastEnd)}` : "Turn on effort tracking for a session with Edit")
+    : `Effort for ${vd.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}`;
+  const av = t.slice(0, 3).map(s => `<i class="av ${log[s.id] === 1 ? "done" : ""}" data-kind="${s.kind}">${EMOJI[s.kind]}</i>`).join("");
+  const more = t.length > 3 ? `<i class="av more">+${t.length - 3}</i>` : "";
+  $("hero").innerHTML = `
+    <div class="heroTxt"><h2>Daily challenge</h2><p>${esc(sub)}</p>
+      <div class="avs">${av}${more}<span class="pct">${Math.round(sc * 100)}%</span></div></div>
+    <div class="shapes" aria-hidden="true"><b class="sh sh1"></b><b class="sh sh2"></b><b class="sh sh3"></b><b class="sh sh4"></b><b class="sh sh5"></b></div>`;
+  const f = state.focus[viewKey];
+  $("focus").hidden = !f;
+  if (f) $("focus").innerHTML = `🎯 Focus: <b>${esc(f)}</b>`;
+}
+
+function renderDays() {
+  const mon = mondayOf(new Date()), tk = todayKey();
+  $("days").innerHTML = [...Array(7)].map((_, i) => {
+    const d = new Date(mon); d.setDate(mon.getDate() + i);
+    const k = dayKey(d), sc = dayScore(k), fut = k > tk;
+    return `<button class="day ${k === viewKey ? "sel" : ""}" data-day="${k}" ${fut ? "disabled" : ""} aria-pressed="${k === viewKey}" aria-label="${d.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}">
+      <i class="dot" ${sc !== null ? `data-kind="${level(sc)}"` : ""}></i>
+      <span>${d.toLocaleDateString(undefined, { weekday: "short" })}</span><b>${d.getDate()}</b></button>`;
+  }).join("");
+}
+
+function markCircles(s, log) {
+  const v = log[s.id];
+  return `<div class="mrow" role="group" aria-label="How did ${esc(s.name)} go?">
+    <button class="mk ${v === 1 ? "on" : ""}" data-mark="${s.id}" data-val="1" aria-pressed="${v === 1}" aria-label="Done">✓</button>
+    <button class="mk ${v === 0.5 ? "on" : ""}" data-mark="${s.id}" data-val="0.5" aria-pressed="${v === 0.5}" aria-label="Partly">◐</button>
+    <button class="mk ${v === 0 ? "on" : ""}" data-mark="${s.id}" data-val="0" aria-pressed="${v === 0}" aria-label="Missed">✕</button>
+  </div>`;
+}
+
+function renderPlan() {
+  const vis = viewingToday();
+  $("planWrap").hidden = !vis;
+  $("rowsTitle").textContent = vis ? "All sessions" : `Sessions on ${keyToDate(viewKey).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}`;
+  if (!vis) return;
+  const d = new Date(), nm = nowMinOf(d), ord = sorted(), log = state.log[viewKey] || {};
+  if (!ord.length) { $("plan").innerHTML = ""; return; }
+  const cur = state.sessions.find(s => inSession(s, nm));
+  const nxt = cur ? ord[(ord.indexOf(cur) + 1) % ord.length] : (ord.find(s => s.start > nm) || ord[0]);
+  const left = cur ? `
+    <article class="pcard nowc" data-kind="${cur.kind}">
+      <div>
+        <span class="tag">${tagFor(cur)}</span>
+        <h3>${esc(cur.name)}</h3>
+        <p class="pm">${d.toLocaleDateString(undefined, { day: "numeric", month: "short" })}<br>${fmt(cur.start)} to ${fmt(cur.end)}</p>
+        ${cur.note ? `<p class="pn">${esc(cur.note)}</p>` : ""}
+      </div>
+      <div>
+        <div class="cdline"><b id="pCd">--:--</b> left</div>
+        <div class="pbar"><i id="pBar"></i></div>
+        ${cur.track ? markCircles(cur, log) : `<div class="rest">${EMOJI[cur.kind] || "⭐"} Enjoy this one</div>`}
+      </div>
+    </article>` : `
+    <article class="pcard nowc" data-kind="open">
+      <div><span class="tag">Now</span><h3>Nothing planned</h3><p class="pm">Add a session below</p></div>
+      <div class="rest">⭐</div>
+    </article>`;
+  $("plan").innerHTML = `${left}
+    <article class="pcard nextc" data-kind="${nxt.kind}">
+      <span class="tag">Next</span>
+      <h3>${esc(nxt.name)}</h3>
+      <p class="pm">${fmt(nxt.start)}<br>to ${fmt(nxt.end)}</p>
+      <span class="big3d" aria-hidden="true">${EMOJI[nxt.kind] || "⭐"}</span>
+    </article>
+    <article class="pcard quick">
+      <button class="qb" data-act="test" aria-label="Test alarm">🎵</button>
+      <button class="qb" data-act="add" aria-label="Add session">➕</button>
+      <button class="qb" data-act="talk" aria-label="Talk to your coach">💬</button>
+    </article>`;
+}
+
+const openPlan = new Set();
+function planBlock(s) {
+  const p = s.plan || [];
+  if (!p.length) return "";
+  const steps = state.steps[viewKey] || {};
+  const done = p.filter((_, i) => steps[`${s.id}-${i}`]).length;
+  const open = openPlan.has(s.id);
+  const list = open ? `<ul class="steps">${p.map((t, i) => {
+    const on = !!steps[`${s.id}-${i}`];
+    return `<li><button class="stp ${on ? "on" : ""}" data-step="${s.id}-${i}" aria-pressed="${on}"><i>${on ? "✓" : ""}</i><span class="tx">${esc(t)}</span></button></li>`;
+  }).join("")}</ul>` : "";
+  return `<button class="lnk planbtn" data-plan="${s.id}" aria-expanded="${open}">${open ? "Hide" : "Show"} plan, ${done} of ${p.length} done</button>${list}`;
+}
+
+function renderRows() {
+  const nm = nowMinOf(new Date()), log = state.log[viewKey] || {}, live = viewingToday();
+  $("rows").innerHTML = sorted().map(s => {
+    const v = log[s.id];
+    const marks = s.track ? `<div class="mrow2" role="group" aria-label="How did ${esc(s.name)} go?">
+      <button class="pill ${v === 1 ? "on" : ""}" data-mark="${s.id}" data-val="1" aria-pressed="${v === 1}">✓ Done</button>
+      <button class="pill ${v === 0.5 ? "on" : ""}" data-mark="${s.id}" data-val="0.5" aria-pressed="${v === 0.5}">◐ Partly</button>
+      <button class="pill ${v === 0 ? "on" : ""}" data-mark="${s.id}" data-val="0" aria-pressed="${v === 0}">✕ Missed</button></div>` : "";
+    return `<div class="row ${live && inSession(s, nm) ? "cur" : ""}" data-kind="${s.kind}">
+      <div class="ic">${EMOJI[s.kind] || "⭐"}</div>
+      <div class="rt"><h4>${esc(s.name)}</h4><p>${fmt(s.start)} to ${fmt(s.end)}</p>${s.note ? `<p class="nt">${esc(s.note)}</p>` : ""}${marks}${planBlock(s)}</div>
+      <div class="rr">
+        <button class="sw" data-alarm="${s.id}" aria-pressed="${s.alarm}" aria-label="Alarm for ${esc(s.name)} at ${fmt(s.start)}"><i></i></button>
+        <button class="lnk" data-edit="${s.id}">Edit</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderHome() { renderHero(); renderDays(); renderPlan(); renderRows(); }
+
+/* =========================================================
+   WEEK (WIG)
+   ========================================================= */
+function renderWeek() {
+  const mon = mondayOf(new Date()), tk = todayKey(), t = tracked();
+  const days = [...Array(7)].map((_, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
+  const pts = {}, seen = {}; t.forEach(s => pts[s.id] = 0);
+  let done = 0, partly = 0;
+  const bars = days.map(d => {
+    const k = dayKey(d), sc = dayScore(k), log = state.log[k] || {};
+    t.forEach(s => { const v = log[s.id]; if (v !== undefined) { pts[s.id] += v; seen[s.id] = true; if (v === 1) done++; else if (v === 0.5) partly++; } });
+    const h = sc === null ? 4 : Math.max(6, Math.round(sc * 100));
+    return `<div class="col"><div class="tube ${k === tk ? "today" : ""}"><div class="fill" data-kind="${level(sc)}" style="height:${h}%"></div></div>
+      <div class="pc">${sc === null ? "-" : Math.round(sc * 100) + "%"}</div>
+      <div class="dn">${d.toLocaleDateString(undefined, { weekday: "short" })}</div></div>`;
+  }).join("");
+
+  const logged = t.filter(s => seen[s.id]);
+  let strong = null, weak = null;
+  if (logged.length) {
+    strong = logged.reduce((a, b) => pts[b.id] > pts[a.id] ? b : a);
+    weak = logged.reduce((a, b) => pts[b.id] < pts[a.id] ? b : a);
+    if (pts[strong.id] === 0) strong = null;
+    if (strong && weak && strong.id === weak.id) weak = null;
+  }
+  const wk = dayKey(mon), target = state.targets.week[wk] || "", avg = weekAvg();
+  const range = `${mon.toLocaleDateString(undefined, { month: "short", day: "numeric" })} to ${days[6].toLocaleDateString(undefined, { month: "short", day: "numeric" })}`;
+
+  $("v-week").innerHTML = `
+    <h1 class="pg">Weekly effort</h1>
+    <p class="pgsub">${range}. Effort is the part you control.</p>
+    <div class="chips3">
+      <div class="chip g"><small>Week effort</small><b>${avg === null ? "-" : Math.round(avg * 100)}<em>${avg === null ? "" : "%"}</em></b></div>
+      <div class="chip b"><small>Streak</small><b>${streak()}<em>days</em></b></div>
+      <div class="chip o"><small>Done</small><b>${done}<em>${partly ? "+" + partly + " part" : "sessions"}</em></b></div>
+    </div>
+    <div class="panel"><div class="wk">${bars}</div></div>
+    <div class="prows">
+      ${strong ? `<div class="prow" data-kind="${strong.kind}"><div class="ic">💪</div><div><b>Strongest session</b><span>${esc(strong.name)}</span></div></div>` : ""}
+      ${weak ? `<div class="prow" data-kind="${weak.kind}"><div class="ic">🌱</div><div><b>Needs love</b><span>${esc(weak.name)}</span></div></div>` : ""}
+      ${!logged.length ? `<div class="prow" data-kind="free"><div class="ic">✅</div><div><b>Nothing marked yet</b><span>Mark sessions Done, Partly or Missed on Home</span></div></div>` : ""}
+    </div>
+    <div class="panel">
+      <h2>This week's effort target</h2>
+      <div class="sub">One clear promise about what you'll put in, not what you'll get.</div>
+      <textarea class="tin" id="wTarget" placeholder="Example: Copywriting 4 hours every day">${esc(target)}</textarea>
+      <button class="btn" id="wSave">Save target</button>
+    </div>`;
+  $("wSave").onclick = () => {
+    state.targets.week[wk] = $("wTarget").value.trim(); save();
+    $("wSave").textContent = "Saved ✓"; setTimeout(() => { const b = $("wSave"); if (b) b.textContent = "Save target"; }, 1500);
+  };
+}
+
+/* =========================================================
+   MONTH (MIG)
+   ========================================================= */
+function renderMonth() {
+  const now = new Date(), y = now.getFullYear(), mo = now.getMonth();
+  const first = new Date(y, mo, 1), offset = (first.getDay() + 6) % 7, total = new Date(y, mo + 1, 0).getDate(), tk = todayKey();
+  let sum = 0, cnt = 0, full = 0, best = 0, run = 0, cells = "";
+  for (let i = 0; i < offset; i++) cells += `<div></div>`;
+  for (let day = 1; day <= total; day++) {
+    const d = new Date(y, mo, day), k = dayKey(d), sc = dayScore(k), future = k > tk;
+    if (sc !== null) { sum += sc; cnt++; if (sc >= 0.8) full++; }
+    if (sc !== null && sc >= 0.6) { run++; best = Math.max(best, run); } else run = 0;
+    cells += `<div class="cell ${future ? "future" : ""} ${k === tk ? "today" : ""}" ${sc !== null ? `data-kind="${level(sc)}"` : ""} title="${sc === null ? "No data" : Math.round(sc * 100) + "%"}">${day}</div>`;
+  }
+  const mk = `${y}-${pad(mo + 1)}`, target = state.targets.month[mk] || "", refl = state.reflections[mk] || "";
+  $("v-month").innerHTML = `
+    <h1 class="pg">${now.toLocaleDateString(undefined, { month: "long", year: "numeric" })}</h1>
+    <p class="pgsub">Every colored circle is a day you showed up.</p>
+    <div class="chips3">
+      <div class="chip g"><small>Avg effort</small><b>${cnt ? Math.round(sum / cnt * 100) : "-"}<em>${cnt ? "%" : ""}</em></b></div>
+      <div class="chip b"><small>Days tracked</small><b>${cnt}</b></div>
+      <div class="chip o"><small>Best streak</small><b>${best}<em>days</em></b></div>
+    </div>
+    <div class="panel">
+      <div class="mh"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      <div class="mg">${cells}</div>
+      <div class="legend">
+        <span data-kind="prayer"><i></i>80%+</span><span data-kind="personal"><i></i>40 to 79%</span>
+        <span data-kind="exercise"><i></i>Under 40%</span><span data-kind="scroll"><i></i>No data</span>
+      </div>
+    </div>
+    <div class="prows"><div class="prow" data-kind="prayer"><div class="ic">🌟</div><div><b>Full-effort days</b><span>${full} so far this month</span></div></div></div>
+    <div class="panel">
+      <h2>Monthly effort goal</h2>
+      <div class="sub">Your effort target for this month</div>
+      <textarea class="tin" id="mTarget" placeholder="Example: Show up for all effort sessions, at least 25 days">${esc(target)}</textarea>
+      <div class="sub">Reflection: what worked, and what will you change?</div>
+      <textarea class="tin" id="mRefl" placeholder="Write it here at the end of the month">${esc(refl)}</textarea>
+      <button class="btn" id="mSave">Save</button>
+    </div>`;
+  $("mSave").onclick = () => {
+    state.targets.month[mk] = $("mTarget").value.trim();
+    state.reflections[mk] = $("mRefl").value.trim(); save();
+    $("mSave").textContent = "Saved ✓"; setTimeout(() => { const b = $("mSave"); if (b) b.textContent = "Save"; }, 1500);
+  };
+}
+
+/* =========================================================
+   TALK (the check-in coach; it knows the schedule)
+   ========================================================= */
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const QUESTIONS = {
+  personal: n => `Good morning, ${n}! What is your ONE focus for today?`,
+  prayer:   n => `${n}, how is your heart this morning? Tell me in a sentence.`,
+  exercise: n => `Time to move, ${n}. How is your body feeling right now?`,
+  free:     n => `Free time, ${n}. What would recharge you the most right now?`,
+  study:    n => `Copywriting block, ${n}. What are you writing or learning right now?`,
+  practice: n => `${n}, what did you work on or ship in this block so far?`,
+  scroll:   n => `Be honest, ${n}: is this scrolling a real break, or a trap?`,
+  open:     n => `How is your day going, ${n}? What are you proud of so far?`,
+  sleep:    n => `It's sleep time, ${n}. What is one thing you'll do better tomorrow?`
+};
+const REPLIES = {
+  personal: [(n, a) => `Locked in, ${n}. "${a}" is today's focus. Everything else supports it.`],
+  prayer:   [n => `Thank you for sharing, ${n}. Starting from peace makes the effort lighter.`, n => `Beautiful, ${n}. Carry that into the rest of the day.`],
+  exercise: [n => `Good, ${n}. Showing up with the body builds the mind too.`, n => `Keep moving, ${n}. Effort first, feelings follow.`],
+  free:     [n => `Rest well, ${n}. Rest is part of the plan, not a break from it.`],
+  study:    [n => `Nice, ${n}. Skill is built one focused hour at a time.`, n => `That's real effort, ${n}. The results will follow the reps.`],
+  practice: [n => `Great, ${n}. Shipping beats thinking. Keep going.`, n => `Noted, ${n}. That's what effort looks like.`],
+  scroll:   [n => `Thanks for being honest, ${n}. Awareness is the first win.`],
+  open:     [n => `Love that, ${n}. Proud days stack up into proud months.`],
+  sleep:    [n => `Good plan, ${n}. Now rest. Tomorrow starts at 4:30.`]
+};
+const REPLY = {
+  done:   [(n, s) => `Yes, ${n}! ${s} is fully done. That's real effort.`, (n, s) => `Full effort on ${s}. Proud of you, ${n}.`],
+  partly: [(n, s) => `Partly counts, ${n}. Half effort on ${s} still beats none.`],
+  missed: [(n, s) => `No stress, ${n}. Missing ${s} once doesn't break you. Showing up next time does.`]
+};
+
+function addMsg(from, text) {
+  state.chat.push({ from, text, t: Date.now() });
+  if (state.chat.length > 120) state.chat.splice(0, state.chat.length - 120);
+  save(); renderChat();
+}
+function renderChat() {
+  const c = $("chat");
+  c.innerHTML = state.chat.map(x => `<div class="msg ${x.from}">${esc(x.text)}</div>`).join("");
+  c.scrollTop = c.scrollHeight;
+  const p = state.pending;
+  $("qrow").innerHTML = p && p.type === "mark"
+    ? `<button class="pill" data-q="1">✓ Done</button><button class="pill" data-q="0.5">◐ Partly</button><button class="pill" data-q="0">✕ Missed</button>` : "";
+}
+function renderTalkTop() {
+  const sc = dayScore(todayKey()), wa = weekAvg();
+  $("profName").textContent = state.fullName;
+  $("profAv").textContent = state.name.charAt(0).toUpperCase();
+  $("talkChips").innerHTML = `
+    <div class="chip g"><small>Streak</small><b>${streak()}<em>days</em></b></div>
+    <div class="chip b"><small>Today</small><b>${sc === null ? "-" : Math.round(sc * 100)}<em>${sc === null ? "" : "%"}</em></b></div>
+    <div class="chip o"><small>This week</small><b>${wa === null ? "-" : Math.round(wa * 100)}<em>${wa === null ? "" : "%"}</em></b></div>`;
+}
+function composeQuestion(force) {
+  const now = new Date(), nm = nowMinOf(now), key = dayKey(now), n = state.name, log = state.log[key] || {};
+  const ended = tracked().filter(s => s.end > s.start && s.end <= nm && log[s.id] === undefined && !state.asked[`mark-${s.id}-${key}`]).sort((a, b) => b.end - a.end);
+  if (ended.length) {
+    const s = ended[0];
+    state.asked[`mark-${s.id}-${key}`] = true;
+    state.pending = { type: "mark", id: s.id };
+    addMsg("app", `${n}, ${s.name} has finished. Did you show up for it?`);
+    return true;
+  }
+  const cur = state.sessions.find(s => inSession(s, nm));
+  if (cur && QUESTIONS[cur.kind]) {
+    const qk = `q-${cur.id}-${key}`;
+    if (force || !state.asked[qk]) {
+      state.asked[qk] = true;
+      state.pending = { type: "answer", kind: cur.kind };
+      addMsg("app", QUESTIONS[cur.kind](n));
+      return true;
+    }
+  }
+  if (force) { state.pending = { type: "answer", kind: "open" }; addMsg("app", QUESTIONS.open(n)); return true; }
+  return false;
+}
+function handleSend() {
+  const input = $("chatIn"), text = input.value.trim();
+  if (!text) return;
+  input.value = "";
+  addMsg("me", text);
+  const n = state.name, key = todayKey(), p = state.pending;
+  if (p && p.type === "answer") {
+    state.notes.push({ date: key, kind: p.kind, a: text });
+    if (state.notes.length > 400) state.notes.splice(0, state.notes.length - 400);
+    if (p.kind === "personal") state.focus[key] = text;
+    state.pending = null;
+    const r = pick(REPLIES[p.kind] || REPLIES.open);
+    save(); renderHero();
+    addMsg("app", r(n, text));
+    return;
+  }
+  if (/tired|lazy|can't|cant|hard|stress|sad|down|discourag/i.test(text)) {
+    addMsg("app", `I hear you, ${n}. You can't control how the day feels, only the effort. Do the next ten minutes, then decide again.`);
+  } else {
+    addMsg("app", `Thanks for telling me, ${n}. Tap "Ask me something" any time and I'll check in on your schedule.`);
+  }
+}
+$("chatSend").onclick = handleSend;
+$("chatIn").addEventListener("keydown", e => { if (e.key === "Enter") handleSend(); });
+$("askMe").onclick = () => composeQuestion(true);
+$("qrow").onclick = e => {
+  const b = e.target.closest("[data-q]");
+  if (b && state.pending && state.pending.type === "mark") setMark(state.pending.id, Number(b.dataset.q), todayKey());
+};
+
+/* =========================================================
+   AUTO: guide for Samsung Modes and Routines
+   ========================================================= */
+const AUTO_ACTIONS = {
+  sleep:    ["Bluetooth: Off", "Do not disturb: On"],
+  personal: ["Bluetooth: On", "Media volume: your wake-up level", "Play your wake-up playlist, or open this app", "Do not disturb: Off"],
+  prayer:   ["Media volume: low", "Do not disturb: On"],
+  exercise: ["Do not disturb: Off", "Media volume: up", "Open your music app"],
+  free:     ["Do not disturb: Off"],
+  study:    ["Do not disturb: On", "Open this app"],
+  practice: ["Do not disturb: On", "Open this app"],
+  scroll:   ["Do not disturb: Off"],
+  open:     ["Do not disturb: Off"]
+};
+const wakeSession = () => sorted().find(s => s.kind === "personal") || sorted()[0];
+
+function autoSteps() {
+  const ws = wakeSession(), t = ws ? fmt(ws.start) : "your wake time";
+  const sp = state.auto.speaker.trim() || "your speaker", vol = state.auto.volume;
+  return [
+    { t: "Pair the speaker once", d: `Switch on ${sp} and put it in pairing mode. Open Settings, then Connections, then Bluetooth, and tap it. Do this one time so your phone remembers it.` },
+    { t: "Open Modes and Routines", d: "Settings, then Modes and Routines, then the Routines tab, then the + button." },
+    { t: "If: set the time", d: `Add the condition Time. Set it to ${t} and tick every day you want it to run.` },
+    { t: "Then: turn on Bluetooth", d: `Add the action Bluetooth and choose On. When ${sp} is switched on and nearby, your phone normally reconnects to it by itself.` },
+    { t: "Then: set the volume", d: `Add Media volume and set it to about ${vol}%.` },
+    { t: "Then: start the sound", d: "Add an action that plays your music app, or opens this app. If you see Play media or Open app, use it. This is what wakes you through the speaker." },
+    { t: "Name it and save", d: `Call it "Wake up, ${state.name}" and save.` },
+    { t: "Keep Routines awake", d: "Settings, then Battery, then Background usage limits. Make sure Routines and your music app are not put to sleep." },
+    { t: "Test it now", d: "On the Routines list, tap the play button on your routine. Check that Bluetooth turns on and the speaker connects." },
+    { t: "Keep a backup alarm", d: "Set one normal Clock alarm 5 minutes later. If anything fails, you still wake up." }
+  ];
+}
+
+function sheetText() {
+  const ws = wakeSession(), sp = state.auto.speaker.trim() || "my speaker";
+  const lines = [`Routines for ${state.fullName}`, `Speaker: ${sp}. Wake volume: ${state.auto.volume}%`, ""];
+  sorted().forEach(s => {
+    lines.push(`${s.name}, ${fmt(s.start)} to ${fmt(s.end)}`);
+    lines.push(`  If: Time is ${fmt(s.start)}`);
+    lines.push(`  Then: ${(AUTO_ACTIONS[s.kind] || []).join("; ")}`);
+    if (s.plan && s.plan.length) lines.push(`  Plan: ${s.plan.join(" / ")}`);
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+function renderAuto() {
+  const a = state.auto, steps = autoSteps(), ws = wakeSession();
+  const doneN = steps.filter((_, i) => a.done[i]).length;
+  const cards = sorted().map(s => `<div class="rcard" data-kind="${s.kind}">
+      <div class="ic">${EMOJI[s.kind] || "⭐"}</div>
+      <div><b>${esc(s.name)}, ${fmt(s.start)}</b>
+        <div>If the time is ${fmt(s.start)}.<br>Then: ${(AUTO_ACTIONS[s.kind] || []).map(esc).join(", ")}.</div></div>
+    </div>`).join("");
+  $("v-auto").innerHTML = `
+    <h1 class="pg">Auto mode</h1>
+    <p class="pgsub">Let your phone run the morning for you.</p>
+    <div class="truth">
+      <h2>Who does what</h2>
+      <p>This app is the plan. Samsung's Modes and Routines is the hands.</p>
+      <p>A web page can't switch Bluetooth on or connect a speaker, because Android doesn't allow it. Routines can. Set them up once with the steps below and your phone will do it at ${ws ? fmt(ws.start) : "wake time"} every day.</p>
+      <p>Your speaker has to be switched on and in range. A routine can't power it on.</p>
+    </div>
+    <div class="panel">
+      <h2>Your setup</h2>
+      <div class="sub">These fill in the steps below.</div>
+      <label class="f">Speaker name<input class="tin" id="aSpeaker" type="text" maxlength="40" placeholder="Example: JBL Flip 6" value="${esc(a.speaker)}"></label>
+      <label class="f">Wake-up volume: <span id="aVolOut">${esc(a.volume)}</span>%<input id="aVol" type="range" min="10" max="100" step="5" value="${esc(a.volume)}"></label>
+      <div class="sub">Wake time comes from "${esc(ws ? ws.name : "your first session")}". Change it on Home with Edit.</div>
+    </div>
+    <div class="panel alist">
+      <h2>Set up the wake-up routine</h2>
+      <div class="progress">${doneN} of ${steps.length} done</div>
+      ${steps.map((s, i) => `<button class="stp ${a.done[i] ? "on" : ""}" data-astep="${i}" aria-pressed="${!!a.done[i]}"><i>${a.done[i] ? "✓" : i + 1}</i><span class="tx"><b>${esc(s.t)}</b><small>${esc(s.d)}</small></span></button>`).join("")}
+    </div>
+    <div class="panel">
+      <h2>A routine for each session</h2>
+      <div class="sub">Build these the same way as the wake-up routine. Use whichever of these actions your phone offers.</div>
+      ${cards}
+      <button class="btn light" id="aCopy" style="margin-top:12px">Copy as a cheat sheet</button>
+    </div>
+    <p class="savenote">Menu names can differ a little between One UI versions.</p>`;
+  const vol = $("aVol");
+  vol.oninput = () => { $("aVolOut").textContent = vol.value; };
+  vol.onchange = () => { state.auto.volume = vol.value; save(); renderAuto(); };
+  $("aSpeaker").onchange = e => { state.auto.speaker = e.target.value.trim(); save(); renderAuto(); };
+  $("aCopy").onclick = async () => {
+    let label = "Copied ✓";
+    try { await navigator.clipboard.writeText(sheetText()); } catch (e) { label = "Copy isn't available here"; }
+    const b = $("aCopy"); if (b) { b.textContent = label; setTimeout(() => { const c = $("aCopy"); if (c) c.textContent = "Copy as a cheat sheet"; }, 1800); }
+  };
+}
+$("v-auto").onclick = e => {
+  const b = e.target.closest("[data-astep]");
+  if (!b) return;
+  const k = b.dataset.astep;
+  if (state.auto.done[k]) delete state.auto.done[k]; else state.auto.done[k] = 1;
+  save(); renderAuto();
+};
+
+/* =========================================================
+   Tabs
+   ========================================================= */
+function switchTab(name) {
+  document.querySelectorAll(".nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === name)));
+  ["today", "month", "week", "auto", "talk"].forEach(t => { $("v-" + t).hidden = t !== name; });
+  if (name === "auto") renderAuto();
+  if (name === "week") renderWeek();
+  if (name === "month") renderMonth();
+  if (name === "talk") {
+    renderTalkTop();
+    if (!state.chat.length) addMsg("app", `Hi ${state.name}! I'm your daily coach. I know your schedule, so I'll check in on what you're doing right now.`);
+    composeQuestion(false);
+    renderChat();
+  }
+  window.scrollTo({ top: 0 });
+}
+document.querySelector(".nav").onclick = e => { const b = e.target.closest("[data-tab]"); if (b) switchTab(b.dataset.tab); };
+$("avatarBtn").onclick = () => switchTab("talk");
+function refreshAll() {
+  renderHome(); renderChat();
+  if (!$("v-week").hidden) renderWeek();
+  if (!$("v-month").hidden) renderMonth();
+  if (!$("v-auto").hidden) renderAuto();
+  if (!$("v-talk").hidden) renderTalkTop();
+}
+
+/* =========================================================
+   Clock, countdown, alarms
+   ========================================================= */
+let alarmsOn = false, fired = new Set(), snoozes = [], ringing = null;
+let audioCtx = null, ringTimer = null, ringStop = null, editingId = null, lastMin = -1;
+
+function tick() {
+  const d = new Date(), nm = nowMinOf(d), nowSec = nm * 60 + d.getSeconds(), tk = dayKey(d);
+  $("dateLine").textContent = `Today ${d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}, ${fmt(nm)}`;
+
+  if (tk !== lastDay) { if (viewKey === lastDay) viewKey = tk; lastDay = tk; lastMin = -1; }
+
+  const cur = state.sessions.find(s => inSession(s, nm));
+  const pCd = $("pCd");
+  if (cur && pCd) {
+    let left = (cur.end % 1440) * 60 - nowSec; if (left <= 0) left += 86400;
+    const pct = Math.min(1, Math.max(0, 1 - left / (lenOf(cur) * 60)));
+    const h = Math.floor(left / 3600), mi = Math.floor((left % 3600) / 60), se = left % 60;
+    pCd.textContent = h ? `${h}:${pad(mi)}:${pad(se)}` : `${pad(mi)}:${pad(se)}`;
+    $("pBar").style.width = `${pct * 100}%`;
+  }
+
+  if (nm !== lastMin) { lastMin = nm; $("hello").textContent = greeting(); renderHome(); }
+
+  if (alarmsOn && !ringing) {
+    for (const s of state.sessions) {
+      if (s.alarm && s.start === nm && !fired.has(`${s.id}-${tk}`)) {
+        fired.add(`${s.id}-${tk}`);
+        startRing(s.name, `${fmt(s.start)} to ${fmt(s.end)}`, `${state.name}, it's time for`, s.kind);
+        return;
+      }
+    }
+    const idx = snoozes.findIndex(z => z.at <= Date.now());
+    if (idx >= 0) { const z = snoozes.splice(idx, 1)[0]; startRing(z.name, "Snoozed alarm", `${state.name}, it's time for`, z.kind); }
+  }
+}
+
+function beep() {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  [[0, 880], [0.2, 1100], [0.4, 880]].forEach(([off, f]) => {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = "triangle"; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t + off);
+    g.gain.exponentialRampToValueAtTime(0.35, t + off + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + off + 0.17);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(t + off); o.stop(t + off + 0.2);
+  });
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+function startRing(name, time, kindText, kind) {
+  ringing = { name, kind: kind || "open" };
+  $("ring").dataset.kind = ringing.kind;
+  $("ringEmo").textContent = EMOJI[ringing.kind] || "⏰";
+  $("ringKind").textContent = kindText;
+  $("ringName").textContent = name;
+  $("ringTime").textContent = time;
+  $("ring").classList.add("on");
+  beep();
+  ringTimer = setInterval(beep, 1400);
+  ringStop = setTimeout(stopRing, 90000);
+  if ("Notification" in window && Notification.permission === "granted") {
+    try { new Notification(name, { body: time }); } catch (e) {}
+  }
+}
+function stopRing() {
+  clearInterval(ringTimer); clearTimeout(ringStop);
+  ringTimer = ringStop = null;
+  $("ring").classList.remove("on");
+  ringing = null;
+}
+async function ensureAudio() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") await audioCtx.resume();
+  } catch (e) {}
+}
+
+$("bell").onclick = async () => {
+  if (alarmsOn) {
+    alarmsOn = false;
+  } else {
+    await ensureAudio();
+    if ("Notification" in window && Notification.permission === "default") {
+      try { await Notification.requestPermission(); } catch (e) {}
+    }
+    alarmsOn = true; beep();
+  }
+  $("bell").setAttribute("aria-pressed", String(alarmsOn));
+  $("bell").setAttribute("aria-label", alarmsOn ? "Alarms on. Tap to turn off" : "Turn alarms on");
+  $("alarmNote").hidden = alarmsOn;
+};
+async function testAlarm() { await ensureAudio(); startRing("Test alarm", "This is how it will sound", "Preview", "open"); }
+$("dismiss").onclick = stopRing;
+$("snooze").onclick = () => {
+  const r = ringing || { name: "Alarm", kind: "open" };
+  snoozes.push({ name: r.name, kind: r.kind, at: Date.now() + 5 * 60 * 1000 });
+  stopRing();
+};
+
+/* =========================================================
+   Home clicks + edit dialog
+   ========================================================= */
+$("v-today").onclick = e => {
+  const day = e.target.closest("[data-day]");
+  if (day) { viewKey = day.dataset.day; renderHome(); return; }
+  const mk = e.target.closest("[data-mark]");
+  if (mk) {
+    const id = Number(mk.dataset.mark), val = Number(mk.dataset.val);
+    const cur = (state.log[viewKey] || {})[id];
+    setMark(id, cur === val ? null : val, viewKey);
+    return;
+  }
+  const st = e.target.closest("[data-step]");
+  if (st) {
+    const o = state.steps[viewKey] = state.steps[viewKey] || {}, k = st.dataset.step;
+    if (o[k]) delete o[k]; else o[k] = 1;
+    save(); renderRows(); return;
+  }
+  const pl = e.target.closest("[data-plan]");
+  if (pl) { const id = Number(pl.dataset.plan); if (openPlan.has(id)) openPlan.delete(id); else openPlan.add(id); renderRows(); return; }
+  const al = e.target.closest("[data-alarm]");
+  if (al) { const s = state.sessions.find(x => x.id == al.dataset.alarm); s.alarm = !s.alarm; save(); renderRows(); return; }
+  const ed = e.target.closest("[data-edit]");
+  if (ed) { openDialog(Number(ed.dataset.edit)); return; }
+  const act = e.target.closest("[data-act]");
+  if (act) {
+    if (act.dataset.act === "test") testAlarm();
+    else if (act.dataset.act === "add") openDialog(null);
+    else if (act.dataset.act === "talk") switchTab("talk");
+  }
+};
+function openDialog(id) {
+  editingId = id;
+  const s = id ? state.sessions.find(x => x.id === id) : { name: "", start: m(16), end: m(17), kind: "free", note: "", track: false };
+  $("dlgTitle").textContent = id ? "Edit session" : "Add session";
+  $("fName").value = s.name; $("fStart").value = toInput(s.start); $("fEnd").value = toInput(s.end % 1440);
+  $("fKind").value = s.kind; $("fNote").value = s.note || ""; $("fPlan").value = (s.plan || []).join("\n"); $("fTrack").checked = !!s.track;
+  $("fDelete").style.display = id ? "" : "none";
+  $("dlg").showModal();
+}
+$("fCancel").onclick = () => $("dlg").close();
+$("fDelete").onclick = () => { state.sessions = state.sessions.filter(s => s.id !== editingId); save(); $("dlg").close(); refreshAll(); };
+$("fSave").onclick = () => {
+  const name = $("fName").value.trim() || "Session";
+  if (!$("fStart").value || !$("fEnd").value) return;
+  const start = fromInput($("fStart").value);
+  let end = fromInput($("fEnd").value);
+  if (end === 0 && start > 0) end = 1440;
+  const data = { name, start, end, kind: $("fKind").value, note: $("fNote").value.trim(), track: $("fTrack").checked, plan: $("fPlan").value.split("\n").map(x => x.trim()).filter(Boolean) };
+  if (editingId) Object.assign(state.sessions.find(s => s.id === editingId), data);
+  else state.sessions.push({ id: state.nextId++, alarm: true, ...data });
+  save(); $("dlg").close(); refreshAll();
+};
+
+/* =========================================================
+   Start
+   ========================================================= */
+(function init() {
+  /* keep older saved schedules in sync: scrolling removed, afternoon block runs 12 to 4 */
+  const old7 = state.sessions.find(s => s.id === 7 && s.end === m(14));
+  if (old7) { old7.end = m(16); old7.name = "Practice, work, ads + research"; old7.note = "Practicing, working and GM, working on ads, research"; }
+  state.sessions = state.sessions.filter(s => !(s.id === 8 && s.name === "Dumb scrolling"));
+  state.sessions.forEach(s => { if (!Array.isArray(s.plan)) s.plan = (DEFAULT_PLANS[s.id] || []).slice(); });
+  save();
+  const key = todayKey();
+  Object.keys(state.asked).forEach(k => { if (!k.endsWith(key)) delete state.asked[k]; });
+  $("avatarBtn").textContent = state.name.charAt(0).toUpperCase();
+  $("chatIn").placeholder = `Talk to me, ${state.name}...`;
+  $("saveNote").textContent = canSave()
+    ? "Your progress, edits and answers are saved on this device."
+    : "Saving isn't available in this preview, so progress resets on reload. Open the file from your own phone or link and it saves by itself.";
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>
